@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://nt15g06rp15k"]
+
+[ext_resource type="Script" path="res://scripts/bird.gd" id="1_75ak3"]
+[ext_resource type="Texture2D" uid="uid://dxyfcrlwxhbpp" path="res://assets/character.png" id="2_fte2l"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ydaws"]
+size = Vector2(40, 25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0hhh5"]
+size = Vector2(44, 29)
+
+[node name="character" type="CharacterBody2D"]
+script = ExtResource("1_75ak3")
+
+[node name="sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_fte2l")
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_ydaws")
+
+[node name="area" type="Area2D" parent="." groups=["player"]]
+
+[node name="collision" type="CollisionShape2D" parent="area"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_0hhh5")
+
+[connection signal="area_entered" from="area" to="." method="_score_increase"]
+[connection signal="area_entered" from="area" to="." method="_enter_killzone"]
+[connection signal="body_entered" from="area" to="." method="_pipe_collision"]

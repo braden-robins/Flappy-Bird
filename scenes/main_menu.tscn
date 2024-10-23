@@ -1,0 +1,152 @@
+[gd_scene load_steps=14 format=3 uid="uid://cq5eek3o7megv"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_wo8r8"]
+[ext_resource type="Script" path="res://scripts/background.gd" id="2_ccg53"]
+[ext_resource type="StyleBox" uid="uid://d2crklr1acsoq" path="res://resources/button_default.tres" id="2_yg4bo"]
+[ext_resource type="StyleBox" uid="uid://2pf3vdfq1po5" path="res://resources/button_hover.tres" id="3_mhatx"]
+[ext_resource type="Texture2D" uid="uid://lxcrh7yq3jkk" path="res://assets/background.png" id="3_tth86"]
+[ext_resource type="Script" path="res://scripts/pipe_spawner.gd" id="4_bccn2"]
+[ext_resource type="StyleBox" uid="uid://ccapbmo04as8h" path="res://resources/button_pressed.tres" id="4_sx02d"]
+[ext_resource type="StyleBox" uid="uid://crx7psfaifre7" path="res://resources/text_style.tres" id="5_6qbnn"]
+[ext_resource type="PackedScene" uid="uid://bcyv51cdourhv" path="res://scenes/pipe.tscn" id="5_ay5cy"]
+[ext_resource type="Script" path="res://scripts/cull.gd" id="6_qbh2o"]
+[ext_resource type="Texture2D" uid="uid://diywdyea3vy8v" path="res://assets/background_ground.png" id="8_r5bv6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x63qu"]
+size = Vector2(49, 897)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8j6d"]
+size = Vector2(36, 903)
+
+[node name="main_menu" type="Control" node_paths=PackedStringArray("spawner")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wo8r8")
+spawner = NodePath("spawner")
+
+[node name="canvas" type="CanvasLayer" parent="."]
+
+[node name="play" type="Button" parent="canvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.0
+offset_top = 7.0
+offset_right = 138.0
+offset_bottom = 125.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = ExtResource("2_yg4bo")
+theme_override_styles/hover = ExtResource("3_mhatx")
+theme_override_styles/pressed = ExtResource("4_sx02d")
+text = "Play"
+
+[node name="quit" type="Button" parent="canvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -102.0
+offset_top = 250.0
+offset_right = 103.0
+offset_bottom = 341.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = ExtResource("2_yg4bo")
+theme_override_styles/hover = ExtResource("3_mhatx")
+theme_override_styles/pressed = ExtResource("4_sx02d")
+text = "Quit"
+
+[node name="title" type="Label" parent="canvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -214.0
+offset_top = -345.0
+offset_right = 214.0
+offset_bottom = -67.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 100
+theme_override_styles/normal = ExtResource("5_6qbnn")
+text = "Happy
+Avian"
+horizontal_alignment = 1
+
+[node name="high_score" type="Label" parent="canvas"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -185.0
+offset_top = 138.0
+offset_right = 185.0
+offset_bottom = 207.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = ExtResource("5_6qbnn")
+text = "High score: 999"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="background_manager" type="Node2D" parent="." node_paths=PackedStringArray("bg_1", "bg_2")]
+z_index = -1
+script = ExtResource("2_ccg53")
+bg_1 = NodePath("background")
+bg_2 = NodePath("buidlings")
+
+[node name="background" type="Sprite2D" parent="background_manager"]
+texture_repeat = 2
+position = Vector2(540, 450)
+texture = ExtResource("3_tth86")
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 1080, 900)
+
+[node name="buidlings" type="Sprite2D" parent="background_manager"]
+texture_repeat = 2
+position = Vector2(540, 450)
+texture = ExtResource("8_r5bv6")
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 1080, 900)
+
+[node name="spawner" type="Marker2D" parent="."]
+position = Vector2(670, 421)
+script = ExtResource("4_bccn2")
+pipe_scene = ExtResource("5_ay5cy")
+
+[node name="player_spot" type="Area2D" parent="."]
+position = Vector2(119, 474)
+
+[node name="collision" type="CollisionShape2D" parent="player_spot"]
+position = Vector2(1.5, -20.5)
+shape = SubResource("RectangleShape2D_x63qu")
+
+[node name="pipe" parent="." instance=ExtResource("5_ay5cy")]
+position = Vector2(634, 459)
+first_pipe = true
+
+[node name="pipe_cull" type="Area2D" parent="."]
+position = Vector2(-264, 398)
+script = ExtResource("6_qbh2o")
+
+[node name="collision" type="CollisionShape2D" parent="pipe_cull"]
+position = Vector2(0, 32.5)
+shape = SubResource("RectangleShape2D_t8j6d")
+
+[connection signal="pressed" from="canvas/play" to="." method="_play_pressed"]
+[connection signal="pressed" from="canvas/quit" to="." method="_quit"]
+[connection signal="area_entered" from="player_spot" to="." method="_menu_pipes"]
+[connection signal="area_entered" from="pipe_cull" to="pipe_cull" method="_cull_objects"]

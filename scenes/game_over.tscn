@@ -1,0 +1,111 @@
+[gd_scene load_steps=6 format=3 uid="uid://it3hti8h5fvs"]
+
+[ext_resource type="Script" path="res://scripts/game_over.gd" id="1_tqsld"]
+[ext_resource type="StyleBox" uid="uid://d2crklr1acsoq" path="res://resources/button_default.tres" id="2_mtfl5"]
+[ext_resource type="StyleBox" uid="uid://crx7psfaifre7" path="res://resources/text_style.tres" id="2_pwict"]
+[ext_resource type="StyleBox" uid="uid://2pf3vdfq1po5" path="res://resources/button_hover.tres" id="3_0g4n6"]
+[ext_resource type="StyleBox" uid="uid://ccapbmo04as8h" path="res://resources/button_pressed.tres" id="4_ur60m"]
+
+[node name="control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tqsld")
+
+[node name="game_over" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -277.0
+offset_top = -389.0
+offset_right = 277.0
+offset_bottom = -239.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = ExtResource("2_pwict")
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="final_score" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -216.5
+offset_top = -226.0
+offset_right = 216.5
+offset_bottom = -103.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = ExtResource("2_pwict")
+text = "Score: 100"
+horizontal_alignment = 1
+
+[node name="high_score" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -278.0
+offset_top = -109.0
+offset_right = 278.0
+offset_bottom = 14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = ExtResource("2_pwict")
+text = "High score: 999"
+horizontal_alignment = 1
+
+[node name="replay" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -188.5
+offset_top = 69.0
+offset_right = 188.5
+offset_bottom = 214.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 80
+theme_override_styles/normal = ExtResource("2_mtfl5")
+theme_override_styles/hover = ExtResource("3_0g4n6")
+theme_override_styles/pressed = ExtResource("4_ur60m")
+text = "Replay?"
+
+[node name="quit" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.5
+offset_top = 250.0
+offset_right = 99.5
+offset_bottom = 341.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 60
+theme_override_styles/normal = ExtResource("2_mtfl5")
+theme_override_styles/hover = ExtResource("3_0g4n6")
+theme_override_styles/pressed = ExtResource("4_ur60m")
+text = "Quit"
+
+[connection signal="pressed" from="replay" to="." method="_replay"]
+[connection signal="pressed" from="quit" to="." method="_quit"]

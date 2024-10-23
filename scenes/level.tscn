@@ -1,0 +1,109 @@
+[gd_scene load_steps=13 format=3 uid="uid://ss5voylphfym"]
+
+[ext_resource type="PackedScene" uid="uid://nt15g06rp15k" path="res://scenes/bird.tscn" id="1_hbi6j"]
+[ext_resource type="Script" path="res://scripts/pipe_spawner.gd" id="2_iylba"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="3_um04p"]
+[ext_resource type="PackedScene" uid="uid://bcyv51cdourhv" path="res://scenes/pipe.tscn" id="4_gweuh"]
+[ext_resource type="PackedScene" uid="uid://it3hti8h5fvs" path="res://scenes/game_over.tscn" id="5_64ofi"]
+[ext_resource type="Script" path="res://scripts/background.gd" id="5_886so"]
+[ext_resource type="StyleBox" uid="uid://crx7psfaifre7" path="res://resources/text_style.tres" id="5_wpgti"]
+[ext_resource type="Texture2D" uid="uid://lxcrh7yq3jkk" path="res://assets/background.png" id="7_ic86y"]
+[ext_resource type="Script" path="res://scripts/cull.gd" id="8_vqg2i"]
+[ext_resource type="Texture2D" uid="uid://diywdyea3vy8v" path="res://assets/background_ground.png" id="9_mxlfm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wsap1"]
+size = Vector2(739, 64)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2pkrq"]
+size = Vector2(36, 903)
+
+[node name="main" type="Node2D"]
+
+[node name="character" parent="." node_paths=PackedStringArray("spawner", "ui", "colour_tint", "hit_flash") instance=ExtResource("1_hbi6j")]
+process_mode = 3
+z_index = 1
+position = Vector2(193, 432)
+spawner = NodePath("../spawner")
+ui = NodePath("../ui")
+colour_tint = NodePath("../colour_tint")
+hit_flash = NodePath("../hit_flash")
+
+[node name="spawner" type="Marker2D" parent="."]
+position = Vector2(670, 421)
+script = ExtResource("2_iylba")
+pipe_scene = ExtResource("4_gweuh")
+
+[node name="ui" type="CanvasLayer" parent="."]
+script = ExtResource("3_um04p")
+
+[node name="score" type="Label" parent="ui"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -137.0
+offset_top = -450.0
+offset_right = 139.0
+offset_bottom = -341.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("5_wpgti")
+text = "Score: 0"
+horizontal_alignment = 1
+
+[node name="control" parent="ui" instance=ExtResource("5_64ofi")]
+process_mode = 3
+
+[node name="pipe" parent="." instance=ExtResource("4_gweuh")]
+position = Vector2(953, 400)
+first_pipe = true
+
+[node name="background_manager" type="Node2D" parent="." node_paths=PackedStringArray("bg_1", "bg_2")]
+z_index = -1
+script = ExtResource("5_886so")
+bg_1 = NodePath("background")
+bg_2 = NodePath("buidlings")
+
+[node name="background" type="Sprite2D" parent="background_manager"]
+texture_repeat = 2
+position = Vector2(540, 450)
+texture = ExtResource("7_ic86y")
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 1080, 900)
+
+[node name="buidlings" type="Sprite2D" parent="background_manager"]
+texture_repeat = 2
+position = Vector2(540, 450)
+texture = ExtResource("9_mxlfm")
+region_enabled = true
+region_rect = Rect2(2.08165e-12, 2.08165e-12, 1080, 900)
+
+[node name="killbox" type="Area2D" parent="." groups=["killzone"]]
+position = Vector2(-75, 1043)
+
+[node name="collision" type="CollisionShape2D" parent="killbox"]
+position = Vector2(359.5, 22)
+shape = SubResource("RectangleShape2D_wsap1")
+
+[node name="colour_tint" type="ColorRect" parent="."]
+visible = false
+offset_right = 540.0
+offset_bottom = 900.0
+color = Color(0.380392, 0.380392, 0.380392, 0.592157)
+
+[node name="hit_flash" type="ColorRect" parent="."]
+offset_right = 540.0
+offset_bottom = 900.0
+color = Color(1, 1, 1, 0)
+
+[node name="pipe_cull" type="Area2D" parent="."]
+position = Vector2(-264, 398)
+script = ExtResource("8_vqg2i")
+
+[node name="collision" type="CollisionShape2D" parent="pipe_cull"]
+position = Vector2(0, 32.5)
+shape = SubResource("RectangleShape2D_2pkrq")
+
+[connection signal="area_entered" from="pipe_cull" to="pipe_cull" method="_cull_objects"]
